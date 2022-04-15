@@ -10,7 +10,7 @@
 #include <iostream>
 #include <pthread.h>
 #include <stdexcept>
-#include <mutex>
+#include <semaphore.h>
 
 #include "consumer.h"
 #include "producer.h"
