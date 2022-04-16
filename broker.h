@@ -33,6 +33,8 @@ class broker{
         void poll();
 
         void to_string();                       // to string method: prints buffer data
+        int get_max_size();
+        int get_max_humans();
 };
 
 #endif

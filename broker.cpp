@@ -17,7 +17,10 @@ void broker::offer(int val){
 }
 
 void broker::to_string(){
-    int size = broker::buffer.size();
+    int size = broker::get_max_size();
     for(int i = 0; i < size; i++)
         printf("%d ", broker::ledger.at(i));
 }
+
+int broker::get_max_size(){ return this->max_size; }
+int broker::get_max_humans(){ return this->max_humans; }
