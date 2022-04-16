@@ -44,7 +44,7 @@ void* produce(void* args){
 
 void* consume(void* args){
 
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 3; i++){
         sem_wait(&mutex);
 
         /* CRITICAL SECTION */
@@ -72,8 +72,7 @@ int main(int arc, char **argv){
         /* INSTANTIATE BROKER */
         broker *bounded_buffer = new broker;
 
-        bounded_buffer->to_string();
-        printf("\n");
+        
 
         pthread_create(&producer,NULL,&produce, bounded_buffer);
         pthread_create(&consumer,NULL,&consume,bounded_buffer);
