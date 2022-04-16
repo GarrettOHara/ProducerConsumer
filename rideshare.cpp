@@ -30,7 +30,7 @@ void* produce(void* args){
         sem_wait(&mutex);
 
         /* CRITICAL SECTION */
-        // sleep(3);
+        sleep(0.5);
         broker buffer = *(broker*)args;
         buffer.offer(i);
 
