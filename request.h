@@ -9,7 +9,7 @@
 #define REQUEST_H_
 
 namespace requests{
-    int size = 0;
+    int request_val = 0;
 }
 
 #endif
