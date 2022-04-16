@@ -12,7 +12,7 @@
 #include <vector>
 #include <iostream>
 
-#include "request_obj.h"
+// #include "request_obj.h"
 
 #define MAX_SIZE   12
 #define MAX_HUMANS 4
