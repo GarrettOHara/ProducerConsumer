@@ -21,7 +21,7 @@ consumer.o : consumer.h consumer.cpp
 
 producer.o : producer.h producer.cpp
 
-broker.o : borker.h broker.cpp
+broker.o : broker.h broker.cpp
 
 clean :
 	rm *.o
