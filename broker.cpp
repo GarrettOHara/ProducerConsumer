@@ -24,7 +24,7 @@ void broker::offer(int val){
 }
 
 void broker::poll(int index, int val){
-    if(index > get_max_size)
+    if(index > get_max_size())
         printf("OUT OF BOUNDS");
     else
         broker::ledger.emplace(ledger.begin()+index,val);
