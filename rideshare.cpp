@@ -41,7 +41,7 @@ void* consume(void* args){
     sem_wait(&mutex);
 
     /* CRITICAL SECTION */
-    sleep(1);
+    sleep(0.1);
     broker buffer = *(broker*)args;
     buffer.poll(1,9);
     buffer.to_string();
