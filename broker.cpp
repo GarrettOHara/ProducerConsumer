@@ -1,3 +1,10 @@
+/**
+ * This Program was written by:
+ * 
+ * Garrett O'Hara cssc1136 RedId: 822936303
+ * 
+ * CS 480 | Professor Shen | April 2022
+ **/
 #include <iostream>
 
 #include "broker.h"
@@ -16,8 +23,11 @@ void broker::offer(int val){
     broker::ledger.at(val) = val;
 }
 
-void broker::poll(int index){
-    broker::ledger.erase(ledger.begin()+index, ledger.begin()+index+1);
+void broker::poll(int index, int val){
+    if(index > get_max_size)
+        printf("OUT OF BOUNDS");
+    else
+        broker::ledger.emplace(ledger.begin()+index,val);
 }
 
 void broker::to_string(){

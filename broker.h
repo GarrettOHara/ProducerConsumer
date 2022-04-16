@@ -30,7 +30,7 @@ class broker{
         std::vector<int> ledger; // <struct request>
 
         void offer(int val);                    // insert request into broker (use tmp int val)
-        void poll(int index);
+        void poll(int index, int val);
 
         void to_string();                       // to string method: prints buffer data
         int get_max_size();
