@@ -5,11 +5,11 @@
  * 
  * CS 480 | Professor Shen | April 2022
  **/
-#ifndef CONSUMER_H_
-#define CONSUMER_H_
+#ifndef PRODUCER_H_
+#define PRODUCER_H_
 
 namespace producer{
-    void produce();
+    void *produce(void* args);
 }
 
 #endif

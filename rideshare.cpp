@@ -24,30 +24,38 @@ using namespace std;
 sem_t mutex;
 
 void* produce(void* args){
-    sem_wait(&mutex);
 
-    /* CRITICAL SECTION */
-    sleep(3);
-    broker buffer = *(broker*)args;
-    buffer.offer(1);
-    buffer.to_string();
-    printf("\n");
+    for(int i = 0; i < 10; i++){
 
-    sem_post(&mutex);
+        sem_wait(&mutex);
+
+        /* CRITICAL SECTION */
+        sleep(1);
+        broker buffer = *(broker*)args;
+        buffer.offer(i);
+
+        sem_post(&mutex);
+
+    }
+
+    
     return NULL;
 }
 
 void* consume(void* args){
-    sem_wait(&mutex);
 
-    /* CRITICAL SECTION */
-    sleep(0.1);
-    broker buffer = *(broker*)args;
-    buffer.poll(1,9);
-    buffer.to_string();
-    printf("\n");
+    for(int i = 0; i < 10; i++){
+        sem_wait(&mutex);
 
-    sem_post(&mutex);
+        /* CRITICAL SECTION */
+        sleep(3);
+        broker buffer = *(broker*)args;
+        buffer.poll();
+
+        sem_post(&mutex);
+
+    }
+
     return NULL;
 }
 

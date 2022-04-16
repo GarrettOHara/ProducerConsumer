@@ -5,36 +5,84 @@
  * 
  * CS 480 | Professor Shen | April 2022
  **/
+#include <vector>
 #include <iostream>
 
 #include "broker.h"
 
 /* CONSTUCTOR */
 broker::broker(){
-    for(int i = 0; i < broker::get_max_size(); i++){
-        broker::ledger.push_back(0);
-    }
+    this->current_size = 0;
+    this->current_human_reqs = 0;
 }
 
 /* DECONSTUCTOR */
-broker::~broker(){ }
+broker::~broker(){
+    while(this->buffer.size()>0)
+        this->buffer.pop();
+}
 
+/**
+ * @brief offer
+ *  - insert value into the bounded buffer
+ * 
+ * @param val 
+ *  - request value
+ */
 void broker::offer(int val){
-    broker::ledger.at(val) = val;
+    this->current_size++;
+    printf("PUSH: %d\n",val);
+    this->buffer.push(val);
+    // this->ledger.push_back(val);
 }
 
-void broker::poll(int index, int val){
-    if(index > get_max_size())
-        printf("OUT OF BOUNDS");
-    else
-        broker::ledger.emplace(ledger.begin()+index,val);
+/**
+ * @brief poll
+ *  - remove first request from queue
+ * 
+ * @param index 
+ *  - index of request
+ * @param val 
+ *  - value of request
+ */
+void broker::poll(){
+    this->current_size--;
+    int tmp = this->buffer.front();
+    printf("POLL: %d\n",tmp);
+    this->buffer.pop();
 }
 
+/**
+ * @brief to_string
+ *  - print data of buffer to std out
+ * 
+ */
 void broker::to_string(){
-    int size = broker::get_max_size();
-    for(int i = 0; i < size; i++)
-        printf("%d ", broker::ledger.at(i));
+    std::vector<int> memory;
+    while(this->buffer.size()>0){
+        memory.push_back(this->buffer.front());
+        this->buffer.pop();
+    }
+    for(int i = 0; i < memory.size(); i++)
+        printf("%d ", memory.at(i));
+    printf("\n");
+
+    for(auto val : memory)
+        this->buffer.push(val);
 }
 
+/**
+ * @brief get_max_size
+ *  - return max size of bounded buffer
+ * 
+ * @return int 
+ */
 int broker::get_max_size(){ return this->max_size; }
+
+/**
+ * @brief get_max_humans
+ *  - return max size of humans requests
+ * 
+ * @return int 
+ */
 int broker::get_max_humans(){ return this->max_humans; }
