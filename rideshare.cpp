@@ -44,11 +44,10 @@ void* produce(void* args){
 
 void* consume(void* args){
 
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < 10; i++){
         sem_wait(&mutex);
 
         /* CRITICAL SECTION */
-        // sleep(1);
         broker *buffer = (broker*)args;
         buffer->poll();
 
@@ -81,6 +80,8 @@ int main(int arc, char **argv){
         /* CREATE PRODUCER CONSUMER THREADS */
         pthread_create(&producer,NULL,producer::produce,&DATA);
         pthread_create(&consumer,NULL,consumer::consume,&DATA);
+        
+        // calls are not ground together here 
         // pthread_create(&producer,NULL,&produce,bounded_buffer);
         // pthread_create(&consumer,NULL,&consume,bounded_buffer);
         
