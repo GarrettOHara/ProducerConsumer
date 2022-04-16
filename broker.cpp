@@ -52,7 +52,7 @@ void broker::poll(){
         printf("POLL: %d\n",tmp);
         this->buffer.pop();
     } else 
-        printf("ERROR: Buffer Empty");
+        printf("ERROR: Buffer Empty\n");
 }
 
 /**
