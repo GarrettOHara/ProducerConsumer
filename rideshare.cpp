@@ -25,21 +25,28 @@ sem_t mutex;
 
 void* produce(void* args){
     sem_wait(&mutex);
-    sleep(1);
 
     /* CRITICAL SECTION */
-    broker tmp = *(broker*)args;
-    tmp.offer(1);
-    tmp.to_string();
+    sleep(3);
+    broker buffer = *(broker*)args;
+    buffer.offer(1);
+    buffer.to_string();
     printf("\n");
+
     sem_post(&mutex);
     return NULL;
 }
 
 void* consume(void* args){
     sem_wait(&mutex);
+
+    /* CRITICAL SECTION */
     sleep(1);
-    printf("Hello from %d\n", *(int*)args);
+    broker buffer = *(broker*)args;
+    buffer.poll(1);
+    buffer.to_string();
+    printf("\n");
+
     sem_post(&mutex);
     return NULL;
 }
@@ -52,6 +59,7 @@ int main(int arc, char **argv){
         
         /* INSTANTIATE THREADS */
         pthread_t threads[2];
+        pthread_t producer, consumer;
 
         /* INSTANTIATE BROKER */
         broker *bounded_buffer = new broker;
@@ -59,13 +67,16 @@ int main(int arc, char **argv){
         bounded_buffer->to_string();
         printf("\n");
 
-        for(int i = 0; i < 2; i++){
-            // int* a = (int*)malloc(sizeof(int));
-            // *a = i+1;
-            pthread_create(&threads[i], NULL, &produce, bounded_buffer);
-        }
-        for(int i = 0; i < 2; i++)
-            pthread_join(threads[i], NULL);
+        pthread_create(&producer,NULL,&produce, bounded_buffer);
+        pthread_create(&consumer,NULL,&consume,bounded_buffer);
+        
+
+        pthread_join(producer,NULL);
+        pthread_join(consumer,NULL);
+
+        // pthread_create(&threads[i], NULL, &produce, bounded_buffer);
+    
+        // pthread_join(threads[i], NULL);
         
         /* FREE SEMAPHORE MEMORY */
         sem_destroy(&mutex);

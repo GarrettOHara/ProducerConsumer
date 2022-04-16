@@ -16,6 +16,10 @@ void broker::offer(int val){
     broker::ledger.at(val) = val;
 }
 
+void broker::poll(int index){
+    broker::ledger.erase(ledger.begin()+index-1, ledger.begin()+index);
+}
+
 void broker::to_string(){
     int size = broker::get_max_size();
     for(int i = 0; i < size; i++)
