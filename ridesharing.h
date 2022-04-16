@@ -32,9 +32,9 @@ extern const char *consumerNames[];
  * so RequestType is synomonous with the producer type
  */
 typedef enum Requests {
-  HumanDriver = 0,   // ride with a human driver
-  RoboDriver = 1,  // ride with an autonomous car 
-  RequestTypeN = 2,   // number of ride request types
+  HumanDriver = 0,      // ride with a human driver
+  RoboDriver = 1,       // ride with an autonomous car 
+  RequestTypeN = 2,     // number of ride request types
 } RequestType;
 
 /* 
@@ -46,9 +46,9 @@ typedef enum Requests {
  *   in the order that they are published (produced).
 */
 typedef enum Consumers {
-  CostAlgoDispatch = 0,   // dispatch to a nearby driver based on cost
-  FastAlgoDispatch = 1,  // dispatch to a nearby driver based on fast matching 
-  ConsumerTypeN = 2,   // Number of consumers
+  CostAlgoDispatch = 0, // dispatch to a nearby driver based on cost
+  FastAlgoDispatch = 1, // dispatch to a nearby driver based on fast matching 
+  ConsumerTypeN = 2,    // Number of consumers
 } ConsumerType;
 
 

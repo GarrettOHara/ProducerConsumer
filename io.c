@@ -36,7 +36,7 @@ double elapsed_s() {
   const double ns_per_s = 1e9; /* nanoseconds per second */
 
   /* Initialize the first time we call this */
-  static struct timespec start;
+  static timespec start;
   static int firsttime = 1;
 
   struct timespec t;

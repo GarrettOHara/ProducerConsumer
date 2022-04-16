@@ -7,14 +7,15 @@
 
 CXX=g++
 CXXFLAGS=-std=c++11 -g
-CFLAGS = -c -Wall -Iinclude -lpthread -lrt
+CFLAGS = -c -Wall -Iinclude 
+THREADING = -pthread
 
 paging : consumer.o producer.o rideshare.o
-	$(CXX) $(CXXFLAGS)  $^
+	$(CXX) $(CXXFLAGS) $(THREADING)  $^
 
 # only with linux -o rideshare
 
-rideshare.o : rideshare.cpp
+rideshare.o : ridesharing.h io.h io.c rideshare.cpp
 
 consumer.o : consumer.h consumer.cpp
 
