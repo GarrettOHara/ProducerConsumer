@@ -72,7 +72,7 @@ int main(int arc, char **argv){
         broker *bounded_buffer = new broker;
 
 
-        pthread_create(&producer,NULL,&produce,bounded_buffer);
+        pthread_create(&producer,NULL,&producer::produce,bounded_buffer);
         pthread_create(&consumer,NULL,&consume,bounded_buffer);
         
 
