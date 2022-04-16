@@ -79,7 +79,8 @@ int main(int arc, char **argv){
         DATA.buffer = bounded_buffer;
 
         /* CREATE PRODUCER CONSUMER THREADS */
-        pthread_create(&producer,NULL,producer::produce,&DATA);
+        //pthread_create(&producer,NULL,producer::produce,&DATA);
+        pthread_create(&producer,NULL,&produce,bounded_buffer);
         pthread_create(&consumer,NULL,&consume,bounded_buffer);
         
         /* JOIN THREADS */
