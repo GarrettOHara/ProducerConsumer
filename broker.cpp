@@ -4,7 +4,7 @@
 
 /* CONSTUCTOR */
 broker::broker(){
-    for(int i = 0; i < broker::max_size; i++){
+    for(int i = 0; i < broker::get_max_size(); i++){
         broker::ledger.push_back(0);
     }
 }
