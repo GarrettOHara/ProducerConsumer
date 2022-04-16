@@ -57,6 +57,7 @@ int main(int arc, char **argv){
         broker *bounded_buffer = new broker;
 
         bounded_buffer->to_string();
+        printf("\n");
 
         for(int i = 0; i < 2; i++){
             // int* a = (int*)malloc(sizeof(int));
