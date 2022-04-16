@@ -18,6 +18,7 @@
 #include "consumer.h"
 #include "producer.h"
 #include "ridesharing.h"
+#include "shared_data.h"
 
 using namespace std;
 
@@ -60,6 +61,8 @@ void* consume(void* args){
 
 int main(int arc, char **argv){
     try{
+        /* INSTANTIATE SHARED DATA STRUCTURE */
+        struct shared_data DATA;
 
         /* INSTANTIATE BINARY SEMAPHORE */
         sem_init(&mutex, 0, 1);
@@ -71,15 +74,18 @@ int main(int arc, char **argv){
         /* INSTANTIATE BROKER */
         broker *bounded_buffer = new broker;
 
+        /* SET SHARED DATA POINTERS */
+        DATA.mutex  = &mutex;
+        DATA.buffer = bounded_buffer;
 
-        pthread_create(&producer,NULL,producer::produce,bounded_buffer);
+        /* CREATE PRODUCER CONSUMER THREADS */
+        pthread_create(&producer,NULL,producer::produce,&DATA);
         pthread_create(&consumer,NULL,&consume,bounded_buffer);
         
-
+        /* JOIN THREADS */
         pthread_join(producer,NULL);
         pthread_join(consumer,NULL);
 
-        
         /* FREE SEMAPHORE MEMORY */
         sem_destroy(&mutex);
 
