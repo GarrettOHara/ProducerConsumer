@@ -31,8 +31,8 @@ void* produce(void* args){
 
         /* CRITICAL SECTION */
         sleep(1);
-        broker buffer = *(broker*)args;
-        buffer.offer(i);
+        broker *buffer = (broker*)args;
+        buffer->offer(i);
 
         sem_post(&mutex);
 
@@ -49,8 +49,8 @@ void* consume(void* args){
 
         /* CRITICAL SECTION */
         // sleep(1);
-        broker buffer = *(broker*)args;
-        buffer.poll();
+        broker *buffer = (broker*)args;
+        buffer->poll();
 
         sem_post(&mutex);
 
@@ -72,18 +72,14 @@ int main(int arc, char **argv){
         /* INSTANTIATE BROKER */
         broker *bounded_buffer = new broker;
 
-        
 
-        pthread_create(&producer,NULL,&produce, bounded_buffer);
+        pthread_create(&producer,NULL,&produce,bounded_buffer);
         pthread_create(&consumer,NULL,&consume,bounded_buffer);
         
 
         pthread_join(producer,NULL);
         pthread_join(consumer,NULL);
 
-        // pthread_create(&threads[i], NULL, &produce, bounded_buffer);
-    
-        // pthread_join(threads[i], NULL);
         
         /* FREE SEMAPHORE MEMORY */
         sem_destroy(&mutex);
