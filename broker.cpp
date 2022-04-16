@@ -46,10 +46,13 @@ void broker::offer(int val){
  *  - value of request
  */
 void broker::poll(){
-    this->current_size--;
-    int tmp = this->buffer.front();
-    printf("POLL: %d\n",tmp);
-    this->buffer.pop();
+    if(this->current_size>0){
+        this->current_size--;
+        int tmp = this->buffer.front();
+        printf("POLL: %d\n",tmp);
+        this->buffer.pop();
+    } else 
+        printf("ERROR: Buffer Empty");
 }
 
 /**
