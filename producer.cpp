@@ -11,7 +11,6 @@ void* producer::produce(void* args){
         sem_wait(DATA->mutex);
 
         /* CRITICAL SECTION */
-        
         broker *buffer = DATA->buffer;
         buffer->offer(i);
 
