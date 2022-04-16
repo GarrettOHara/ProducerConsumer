@@ -31,7 +31,7 @@ void* produce(void* args){
     broker tmp = *(broker*)args;
     tmp.offer(1);
     tmp.to_string();
-
+    printf("\n");
     sem_post(&mutex);
     return NULL;
 }
