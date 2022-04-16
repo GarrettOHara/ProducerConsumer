@@ -17,7 +17,7 @@ void broker::offer(int val){
 }
 
 void broker::poll(int index){
-    broker::ledger.erase(ledger.begin()+index-1, ledger.begin()+index);
+    broker::ledger.erase(ledger.begin()+index, ledger.begin()+index+1);
 }
 
 void broker::to_string(){
