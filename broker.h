@@ -9,6 +9,7 @@
 #define BROKER_H_
 
 #include <queue>
+#include <vector>
 #include <iostream>
 
 #include "request.h"
@@ -23,8 +24,15 @@ class broker{
 
     public:
         broker();                               // constructor
+        ~broker();
 
-        std::queue<struct request> buffer;
+        // std::queue <struct requests> buffer;
+        std::vector<int> ledger; // <struct request>
+
+        void offer(int val);                    // insert request into broker (use tmp int val)
+        void poll();
+
+        void to_string();                       // to string method: prints buffer data
 };
 
 #endif

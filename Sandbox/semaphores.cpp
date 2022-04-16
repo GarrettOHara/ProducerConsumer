@@ -13,11 +13,6 @@
 #include <stdexcept>
 #include <semaphore.h>
 
-// #include "io.h"
-// #include "consumer.h"
-// #include "producer.h"
-// #include "ridesharing.h"
-
 #define PRODUCER "producer"
 #define CONSUMER "consumer"
 
@@ -45,7 +40,7 @@ int main(int arc, char **argv){
 
         for(int i = 0; i < 2; i++){
             int* a = (int*)malloc(sizeof(int));
-            *a = i;
+            *a = i+1;
             pthread_create(&threads[i], NULL, &sample, a);
         }
 

@@ -8,8 +8,8 @@
 #ifndef REQUEST_H_
 #define REQUEST_H_
 
-namespace request{
-    
+namespace requests{
+    int size = 0;
 }
 
 #endif
