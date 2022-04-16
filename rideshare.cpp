@@ -43,7 +43,7 @@ void* consume(void* args){
     /* CRITICAL SECTION */
     sleep(1);
     broker buffer = *(broker*)args;
-    buffer.poll(1);
+    buffer.poll(1,9);
     buffer.to_string();
     printf("\n");
 
