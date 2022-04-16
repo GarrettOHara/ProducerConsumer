@@ -5,10 +5,10 @@
  * 
  * CS 480 | Professor Shen | April 2022
  **/
-#ifndef REQUEST_H_
-#define REQUEST_H_
+#ifndef REQUEST_OBJ_H_
+#define REQUEST_OBJ_H_
 
-namespace request{
+namespace request_obj{
     char *request_type;
 };
 
