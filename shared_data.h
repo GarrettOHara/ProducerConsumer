@@ -16,6 +16,15 @@ typedef struct shared_data{
     sem_t   *mutex;    
     broker  *buffer;
     // char    *request_type;
+    
+    int     request_limit;
+    int     current_requests;
+
+    float   human_driver_req;
+    float   auton_driver_req;
+
+    float   cost_saving_consumer;
+    float   fast_match_consumer;
 
 }SHARED_DATA;
 

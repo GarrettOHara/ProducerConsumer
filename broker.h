@@ -31,8 +31,10 @@ class broker{
         int current_size;                       // current size in bounded buffer
         int current_human_reqs;
 
+        int total_requests;
+
         void offer(int val);                    // insert request into broker (use tmp int val)
-        void poll();        //return request that was popped 
+        void poll();        //return request that was popped
 
         void to_string();                       // to string method: prints buffer data
         int get_max_size();                     // get max buffer size

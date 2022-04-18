@@ -76,6 +76,7 @@ int main(int arc, char **argv){
         /* SET SHARED DATA POINTERS */
         DATA.mutex  = &mutex;
         DATA.buffer = bounded_buffer;
+        DATA.request_limit = 120;
 
         /* CREATE PRODUCER CONSUMER THREADS */
         pthread_create(&producer,NULL,producer::produce,&DATA);
@@ -86,8 +87,12 @@ int main(int arc, char **argv){
         // pthread_create(&consumer,NULL,&consume,bounded_buffer);
         
         /* JOIN THREADS */
-        pthread_join(producer,NULL);
-        pthread_join(consumer,NULL);
+        if(DATA.current_requests >= DATA.request_limit)
+            pthread_join(producer,NULL);
+        
+        if(DATA.current_requests >= DATA.request_limit &&
+           DATA.buffer->current_size)
+            pthread_join(consumer,NULL);
 
         /* FREE SEMAPHORE MEMORY */
         sem_destroy(&mutex);
