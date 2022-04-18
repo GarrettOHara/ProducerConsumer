@@ -15,7 +15,7 @@ void* consumer::consume(void *args){
     while(true){
 
     // for(int i = 0; i < 10; i++){
-        // sleep(1);
+        sleep(0.5);
         sem_wait(DATA->mutex);
 
         /* CRITICAL SECTION */
