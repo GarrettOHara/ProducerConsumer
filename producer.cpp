@@ -15,16 +15,24 @@
 void* producer::produce(void* args){
     struct shared_data *DATA = (shared_data*)args;
     while(true){
-    // for(int i = 0; i < 10; i++){
+        /* STOP REQUESTS, LIMIT REACHED */
+        if(DATA->current_requests >= DATA->request_limit) { break; }
+
+        /* PROCESS LATENCY */
         sleep(1);
+
         sem_wait(DATA->mutex);
 
         /* CRITICAL SECTION */
-        DATA->current_requests++;
+        bool human = DATA->sleep_time == DATA->human_driver_req;
         broker *buffer = DATA->buffer;
-        buffer->offer(buffer->current_size);
+        if(buffer->offer(human))
+            DATA->current_requests++;
+        
+        printf("PUSH: %s\n", human ? "human" : "auton");
 
         sem_post(DATA->mutex);
     }
+    printf("PRODUCER KILLED\n");
     return NULL;
 }

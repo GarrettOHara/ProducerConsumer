@@ -29,17 +29,29 @@ broker::~broker(){
  * @param val 
  *  - request value
  */
-void broker::offer(int val){
-    if(this->current_size < 12){
-        this->current_size++;
-        this->total_requests++;
-        this->buffer.push(val);
-        
-        printf("PUSH: %d\n",val);
+bool broker::offer(bool human){
+    /* OFFER HUMAN REQUEST */
+    if(human){
+        if(this->current_size <= this->get_max_size() &&
+           this->current_human_reqs <= this->get_max_humans()){
+            
+            /* UPDATE COUNTS AND ADD TO BUFFER */
+            this->current_size++;
+            this->current_human_reqs++;
+            this->buffer.push(human);            
+        } else 
+            return false;
+    /* OFFER AUTONOMOUS REQUEST */
+    } else {
+        if(this->current_size <= this->get_max_size()){
+            
+            /* UPDATE COUNTS AND ADD TO BUFFER */
+            this->current_size++;
+            this->buffer.push(human);
+        } else 
+            return false;
     }
-
-
-    // this->ledger.push_back(val);
+    return true;
 }
 
 /**
@@ -51,14 +63,15 @@ void broker::offer(int val){
  * @param val 
  *  - value of request
  */
-void broker::poll(){
+bool broker::poll(){
     if(this->current_size>0){
+        bool tmp = this->buffer.front();
+        if(tmp)
+            this->current_human_reqs--;
         this->current_size--;
-        int tmp = this->buffer.front();
         this->buffer.pop();
-
-        printf("POLL: %d\n",this->current_size);
-    }
+    } else 
+        return false;
 }
 
 /**

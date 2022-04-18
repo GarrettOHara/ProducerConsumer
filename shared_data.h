@@ -15,17 +15,25 @@
 typedef struct shared_data{
     sem_t   *mutex;    
     broker  *buffer;
-    // char    *request_type;
+    int     sleep_time;
     
-    int     request_limit = 0;
-    int     current_requests = 0;
+    int   request_limit         = 120;
+    int   current_requests      = 0;
 
-    float   human_driver_req;
-    float   auton_driver_req;
+    int   human_driver_req      = 0;
+    int   auton_driver_req      = 0;
 
-    float   cost_saving_consumer;
-    float   fast_match_consumer;
+    int   cost_saving_consumer  = 0;
+    int   fast_match_consumer   = 0;
 
 }SHARED_DATA;
+
+// typedef struct args {
+//     int   human_driver_req     = 0;
+//     int   auton_driver_req     = 0;
+
+//     int   cost_saving_consumer = 0;
+//     int   fast_match_consumer  = 0;
+// };
 
 #endif

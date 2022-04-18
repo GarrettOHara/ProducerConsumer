@@ -14,15 +14,24 @@ void* consumer::consume(void *args){
     struct shared_data *DATA = (shared_data*)args;
     while(true){
 
-    // for(int i = 0; i < 10; i++){
+        /* PROCESS LATENCY */
         sleep(1);
         sem_wait(DATA->mutex);
 
         /* CRITICAL SECTION */
         broker *buffer = DATA->buffer;
-        buffer->poll();
+        if(DATA->current_requests >= DATA->request_limit &&
+            buffer->current_size == 0) { sem_post(DATA->mutex); break; }
 
+        if(buffer->poll()){
+            printf("POLL:\t%d\t%d\t%d\t%d\n",
+                DATA->current_requests,
+                DATA->request_limit,
+                buffer->current_size,
+                buffer->current_human_reqs);
+        }
         sem_post(DATA->mutex);
     }
+    printf("CONSUMER KILLED\n");
     return NULL;
 }
