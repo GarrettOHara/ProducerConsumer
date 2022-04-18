@@ -88,13 +88,15 @@ int main(int arc, char **argv){
         // pthread_create(&consumer,NULL,&consume,bounded_buffer);
         
         /* JOIN THREADS */
-        if(DATA.current_requests>=DATA.request_limit){
-            pthread_join(producerA,NULL);
-            // pthread_join(producerB,NULL);
-            if(DATA.buffer->current_size==0)
-                pthread_join(consumer, NULL);
-        }
-        
+        // if(DATA.current_requests>=DATA.request_limit){
+        //     pthread_join(producerA,NULL);
+        //     // pthread_join(producerB,NULL);
+        //     if(DATA.buffer->current_size==0)
+        //         pthread_join(consumer, NULL);
+        // }
+
+        pthread_join(producerA,NULL);
+        pthread_join(consumer, NULL);
         
         // if(DATA.current_requests >= DATA.request_limit)
         //     pthread_join(producer,NULL);
