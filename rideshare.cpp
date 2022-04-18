@@ -80,7 +80,7 @@ int main(int arc, char **argv){
 
         /* CREATE PRODUCER CONSUMER THREADS */
         pthread_create(&producerA,NULL,producer::produce,&DATA);
-        // pthread_create(&producerB,NULL,producer::produce,&DATA);
+        pthread_create(&producerB,NULL,producer::produce,&DATA);
         pthread_create(&consumer,NULL, consumer::consume,&DATA);
         
         // calls are not ground together here 
@@ -96,6 +96,7 @@ int main(int arc, char **argv){
         // }
 
         pthread_join(producerA,NULL);
+        pthread_join(producerB,NULL);
         pthread_join(consumer, NULL);
         
         // if(DATA.current_requests >= DATA.request_limit)
