@@ -18,10 +18,11 @@ void* producer::produce(void* args){
     while(true){
         i++;
     // for(int i = 0; i < 10; i++){
-        sleep(.5);
+        sleep(0.5);
         sem_wait(DATA->mutex);
 
         /* CRITICAL SECTION */
+        DATA->current_requests++;
         broker *buffer = DATA->buffer;
         buffer->offer(i);
 

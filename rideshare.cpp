@@ -68,7 +68,7 @@ int main(int arc, char **argv){
         
         /* INSTANTIATE THREADS */
         pthread_t threads[2];
-        pthread_t producer, consumer;
+        pthread_t producerA, producerB, consumer;
 
         /* INSTANTIATE BROKER */
         broker *bounded_buffer = new broker;
@@ -79,16 +79,19 @@ int main(int arc, char **argv){
         DATA.request_limit = 120;
 
         /* CREATE PRODUCER CONSUMER THREADS */
-        pthread_create(&producer,NULL,producer::produce,&DATA);
-        pthread_create(&consumer,NULL,consumer::consume,&DATA);
+        pthread_create(&producerA,NULL,producer::produce,&DATA);
+        pthread_create(&producerB,NULL,producer::produce,&DATA);
+        pthread_create(&consumer,NULL, consumer::consume,&DATA);
         
         // calls are not ground together here 
         // pthread_create(&producer,NULL,&produce,bounded_buffer);
         // pthread_create(&consumer,NULL,&consume,bounded_buffer);
         
         /* JOIN THREADS */
-        pthread_join(producer,NULL);
-        pthread_join(consumer,NULL);
+        if(DATA.current_requests)
+        pthread_join(producerA,NULL);
+        pthread_join(producerB,NULL);
+        pthread_join(consumer, NULL);
         // if(DATA.current_requests >= DATA.request_limit)
         //     pthread_join(producer,NULL);
         
