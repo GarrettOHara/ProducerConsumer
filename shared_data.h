@@ -17,8 +17,8 @@ typedef struct shared_data{
     broker  *buffer;
     // char    *request_type;
     
-    int     request_limit;
-    int     current_requests;
+    int     request_limit = 0;
+    int     current_requests = 0;
 
     float   human_driver_req;
     float   auton_driver_req;
