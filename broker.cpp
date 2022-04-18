@@ -57,7 +57,7 @@ void broker::poll(){
         int tmp = this->buffer.front();
         this->buffer.pop();
 
-        printf("POLL: %d\n",tmp);
+        printf("POLL: %d\n",this->current_size);
     }
 }
 
