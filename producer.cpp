@@ -14,7 +14,9 @@
 
 void* producer::produce(void* args){
     struct shared_data *DATA = (shared_data*)args;
+    int i = 0;
     while(true){
+        i++;
     // for(int i = 0; i < 10; i++){
         sleep(1);
         sem_wait(DATA->mutex);

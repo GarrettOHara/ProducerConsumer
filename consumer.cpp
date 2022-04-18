@@ -13,6 +13,7 @@
 void* consumer::consume(void *args){
     struct shared_data *DATA = (shared_data*)args;
     while(true){
+
     // for(int i = 0; i < 10; i++){
         sleep(1);
         sem_wait(DATA->mutex);
