@@ -11,7 +11,7 @@ CFLAGS = -c -Wall -Iinclude
 THREADING = -pthread
 
 paging : consumer.o producer.o rideshare.o broker.o arguments.o thread_data.h
-	$(CXX) $(CXXFLAGS) $(THREADING)  $^
+	$(CXX) $(CXXFLAGS) $(THREADING) -o rideshare  $^
 
 # only with linux -o rideshare
 
