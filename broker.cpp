@@ -16,11 +16,16 @@ broker::broker(){
     this->current_requests = 0;
     this->current_human_reqs = 0;
     
-    int a[] = {0,0};
-    int b[] = {0,0};
-    this->consumed[0] = &a;
-    this->consumed[1] = &b;
-    
+    // int a[] = {0,0};
+    // int b[] = {0,0};
+    // this->consumed[0] = a;
+    // this->consumed[1] = b;
+
+    std::vector<int> a = {0,0}; 
+    std::vector<int> b = {0,0};
+
+    this->consumed.push_back(a);
+    this->consumed.push_back(b);
 }
 
 /* DECONSTUCTOR */
@@ -39,8 +44,8 @@ broker::~broker(){
 bool broker::offer(bool human){
     /* OFFER HUMAN REQUEST */
     if(human){
-        if(this->current_requests <= this->get_max_size() &&
-           this->current_human_reqs <= this->get_max_humans()){
+        if(this->current_requests < this->get_max_size() &&
+           this->current_human_reqs < this->get_max_humans()){
             
             /* UPDATE COUNTS AND ADD TO BUFFER */
             this->current_requests++;
@@ -52,7 +57,7 @@ bool broker::offer(bool human){
     
     /* OFFER AUTONOMOUS REQUEST */
     } else {
-        if(this->current_requests <= this->get_max_size()){
+        if(this->current_requests < this->get_max_size()){
             
             /* UPDATE COUNTS AND ADD TO BUFFER */
             this->current_requests++;

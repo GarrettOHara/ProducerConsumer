@@ -106,7 +106,10 @@ int main(int arc, char **argv){
         int produced[] = {bounded_buffer->total_human_reqs,
             bounded_buffer->total_requests-bounded_buffer->total_human_reqs};
         
-        io_production_report(produced,bounded_buffer->consumed);
+        int *arr[2];
+        *arr = bounded_buffer->consumed[0].data();
+        *(arr + 1) = bounded_buffer->consumed[1].data();
+        io_production_report(produced,arr);
         
 
         /* FREE SEMAPHORE MEMORY */

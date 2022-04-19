@@ -24,7 +24,7 @@ void* producer::produce(void* args){
     while(true){
 
         /* PROCESS LATENCY */
-        sleep(thread_data->latency/CAST);
+        usleep(thread_data->latency*CAST);
         
         /* CRITICAL SECTION */
         sem_wait(thread_data->mutex);
@@ -45,15 +45,17 @@ void* producer::produce(void* args){
             int request_queue[] = {buffer->current_human_reqs,buffer->current_requests-buffer->current_human_reqs};
             int produced[] = {buffer->total_human_reqs,buffer->total_requests-buffer->total_human_reqs};
             io_add_type(RequestType (thread_data->id), request_queue, produced);
+
+            /* DEBUG */
+            // printf("POST\t\t%s\tBUFFER SIZE: %d\tHUMAN REQS: %d\n",
+            // human ? "human" : "auton", 
+            // buffer->current_requests,
+            // buffer->current_human_reqs);
         }
 
         
 
-        /* DEBUG */
-        // printf("POST\t\t%s\tBUFFER SIZE: %d\tHUMAN REQS: %d\n",
-        //     human ? "human" : "auton", 
-        //     buffer->current_requests,
-        //     buffer->current_human_reqs);
+        
 
         sem_post(thread_data->mutex);
         

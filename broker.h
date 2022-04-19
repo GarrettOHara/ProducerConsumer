@@ -16,6 +16,8 @@
 #define MAX_HUMANS 4
 #define ALGO_COUNT 2
 
+using namespace std;
+
 class broker{
     private:
         int max_size   = MAX_SIZE;              // maxumum number of requests in buffer
@@ -25,9 +27,10 @@ class broker{
         broker();                               // constructor
         ~broker();                              // deconstructor
 
-        std::queue <bool> buffer;               // replace with request obj
+        queue <bool> buffer;                    // replace with request obj
 
-        int *consumed[ALGO_COUNT];              // keep track of request consumed by respective algorithm
+        vector<vector<int> > consumed;          // vector[ALGORITHM][REQUEST TYPE] keep track of 
+                                                // all consumed requests counts
         
         int total_requests;                     // keep track of total requests sent to broker
         int total_human_reqs;                   // keep track of total human requests sent to broker

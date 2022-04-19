@@ -14,8 +14,10 @@
 #include "ridesharing.h"
 
 #define CAST 1000
-#define VALUE_INDEX 0
+#define INSERT_COMPLETE 0
 #define REQUEST_INDEX 1
+#define COST_SAVING_ALGO 0
+#define FAST_MATHCHING_ALO 1
 
 void* consumer::consume(void *args){
     threading_data *thread_data = (threading_data*)args;
@@ -23,7 +25,7 @@ void* consumer::consume(void *args){
     while(true){
 
         /* PROCESS LATENCY */
-        sleep(thread_data->latency/CAST);
+        usleep(thread_data->latency*CAST);
         
         /* CRITICAL SECTION */
         sem_wait(thread_data->mutex);
@@ -33,27 +35,29 @@ void* consumer::consume(void *args){
             buffer->current_requests == 0) { sem_post(thread_data->mutex); break; }
 
         /* RETURNS TRUE IF REQUEST POLLED */
+        /* arr[REQUEST SUCCESS][REQUEST TYPE] */
         bool *arr = buffer->poll();
         
-        if(arr[VALUE_INDEX]){
-            printf("\nRETURED DATA: %d   %d\n",int(arr[VALUE_INDEX]), int(arr[REQUEST_INDEX]));
-            int in_request_queue[] = {buffer->current_requests-buffer->current_human_reqs,buffer->current_human_reqs};
-            int consumed[] = {buffer->consumed_requests-buffer->consumed_human_reqs, buffer->consumed_human_reqs};
+        /* IF REQUEST WAS SUCCESSFUL, UPDATE COUNTS, WRITE TO STD OUT */
+        if(arr[INSERT_COMPLETE]){
+            
+            /* BUFFER->CONSUMED: vector[ALGORITHM][REQUEST TYPE] */
+            buffer->consumed[thread_data->id][arr[REQUEST_INDEX]]++;
+            
+            /* request[BUFFER TOTAL REQUESTS, BUFFER TOTAL HUMAN REQUESTS]*/
+            int request[] = {buffer->current_requests-buffer->current_human_reqs,
+                        buffer->current_human_reqs};
+            
+            /* consumed[COST SAVING ALGORITHM FOR REQUEST X, 
+                FAST MATCHING ALGORITHM FOR REQUEST X*/
+            int consumed[] = {buffer->consumed[arr[REQUEST_INDEX]][COST_SAVING_ALGO],
+                        buffer->consumed[arr[REQUEST_INDEX]][FAST_MATHCHING_ALO]};
+            
+            /* imported from io.h, FORMAT TO STD OUT */
             io_remove_type(Consumers (thread_data->id),
                 RequestType (arr[REQUEST_INDEX]),
-                in_request_queue,
+                request,
                 consumed);
-
-            /* UPDATE REPORT VALUES */
-            buffer->consumed[int(arr[VALUE_INDEX])][thread_data->id]++;
-            
-            /* DEUG */
-            // printf("POLL\tCURRENT REQUESTS: %d"
-            //        "\tREQUEST LIMIT: %d"
-            //        "\tCURRENT HUMAN REQS: %d\n",
-            //     buffer->current_requests,
-            //     thread_data->args->request_limit,
-            //     buffer->current_human_reqs);
         }
         sem_post(thread_data->mutex);
         
