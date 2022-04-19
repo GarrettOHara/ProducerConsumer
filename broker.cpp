@@ -12,8 +12,15 @@
 
 /* CONSTUCTOR */
 broker::broker(){
-    this->current_size = 0;
+    this->total_requests = 0;
+    this->current_requests = 0;
     this->current_human_reqs = 0;
+    
+    int a[] = {0,0};
+    int b[] = {0,0};
+    this->consumed[0] = &a;
+    this->consumed[1] = &b;
+    
 }
 
 /* DECONSTUCTOR */
@@ -24,7 +31,7 @@ broker::~broker(){
 
 /**
  * @brief offer
- *  - insert value into the bounded buffer
+ *  - insert request into the bounded buffer
  * 
  * @param val 
  *  - request value
@@ -32,25 +39,28 @@ broker::~broker(){
 bool broker::offer(bool human){
     /* OFFER HUMAN REQUEST */
     if(human){
-        if(this->current_size <= this->get_max_size() &&
+        if(this->current_requests <= this->get_max_size() &&
            this->current_human_reqs <= this->get_max_humans()){
             
             /* UPDATE COUNTS AND ADD TO BUFFER */
-            this->current_size++;
+            this->current_requests++;
             this->current_human_reqs++;
+            this->total_human_reqs++;
             this->buffer.push(human);            
         } else 
             return false;
+    
     /* OFFER AUTONOMOUS REQUEST */
     } else {
-        if(this->current_size <= this->get_max_size()){
+        if(this->current_requests <= this->get_max_size()){
             
             /* UPDATE COUNTS AND ADD TO BUFFER */
-            this->current_size++;
+            this->current_requests++;
             this->buffer.push(human);
         } else 
             return false;
     }
+    this->total_requests++;
     return true;
 }
 
@@ -63,15 +73,22 @@ bool broker::offer(bool human){
  * @param val 
  *  - value of request
  */
-bool broker::poll(){
-    if(this->current_size>0){
+bool* broker::poll(){
+    bool *arr = new bool[2];
+    if(this->current_requests>0){
         bool tmp = this->buffer.front();
-        if(tmp)
+        if(tmp){
             this->current_human_reqs--;
-        this->current_size--;
+            this->consumed_human_reqs++;
+        }
+        this->current_requests--;
+        this->consumed_requests++;
         this->buffer.pop();
+        arr[0]=true;
+        arr[1]=tmp;
+        return arr;
     } else 
-        return false;
+        return arr;
 }
 
 /**

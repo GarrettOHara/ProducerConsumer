@@ -12,10 +12,9 @@
 #include <vector>
 #include <iostream>
 
-// #include "request_obj.h"
-
 #define MAX_SIZE   12
 #define MAX_HUMANS 4
+#define ALGO_COUNT 2
 
 class broker{
     private:
@@ -27,12 +26,20 @@ class broker{
         ~broker();                              // deconstructor
 
         std::queue <bool> buffer;               // replace with request obj
-        // std::vector<int> ledger;             // replace with request obj
-        int current_size;                       // current size in bounded buffer
-        int current_human_reqs;
 
-        bool offer(bool human);       // insert request into broker
-        bool poll();        //return request that was popped
+        int *consumed[ALGO_COUNT];              // keep track of request consumed by respective algorithm
+        
+        int total_requests;                     // keep track of total requests sent to broker
+        int total_human_reqs;                   // keep track of total human requests sent to broker
+
+        int consumed_requests;                  // total consumed requests
+        int consumed_human_reqs;                // total consumed human requests
+
+        int current_requests;                   // current requests in bounded buffer
+        int current_human_reqs;                 // current human requests in bounded buffer
+
+        bool offer(bool human);                 // insert request into bounded buffer
+        bool* poll();                           // remove request from bounded buffer
 
         void to_string();                       // to string method: prints buffer data
         int get_max_size();                     // get max buffer size

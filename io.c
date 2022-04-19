@@ -138,7 +138,7 @@ void io_add_type(RequestType requestType, int inRequestQueue[], int produced[]) 
  *
  * Counts reflect numbers after the request has been removed / dispatched
  */
-void io_remove_type(Consumers consumer, RequestType requestType,
+void io_remove_type(ConsumerType consumer, RequestType requestType,
 		    int inRequestQueue[], int consumed[]) {
   int idx;
   int total;

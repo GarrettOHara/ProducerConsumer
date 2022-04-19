@@ -10,10 +10,12 @@ CXXFLAGS=-std=c++11 -g
 CFLAGS = -c -Wall -Iinclude 
 THREADING = -pthread
 
-paging : consumer.o producer.o rideshare.o broker.o
+paging : consumer.o producer.o rideshare.o broker.o arguments.o thread_data.h
 	$(CXX) $(CXXFLAGS) $(THREADING)  $^
 
 # only with linux -o rideshare
+
+arguments.o : arguments.h arguments.cpp
 
 rideshare.o : ridesharing.h io.h io.c rideshare.cpp
 
