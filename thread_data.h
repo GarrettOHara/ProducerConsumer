@@ -14,9 +14,13 @@
 #include "arguments.h"
 
 struct threading_data {
-    broker *buffer;         // pointer to the broker obj
+    broker *buffer;         // pointer to the broker object
     sem_t  *mutex;          // pointer to binary semaphore
-    struct arguments *args; // pointer to CLI arguments
+    sem_t  *human_req;      // pointer to human_req thread semaphore
+    sem_t  *robot_req;      // pointer to robot_req thread semaphore
+    sem_t  *cost_algo;      // pointer to cost_algo thread semaphore
+    sem_t  *fast_algo;      // pointer to fast_algo thread semaphore
+    struct arguments *args; // pointer to CLI arguments struct
     int latency = 0;        // latency of process
     int id;                 // id for io functions
 };

@@ -9,7 +9,7 @@
 #define CONSUMER_H_
 
 namespace consumer{
-    void *consume(void* args);
+    void *consume(void* args);  // consumer function
 }
 
 #endif

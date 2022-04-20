@@ -63,5 +63,9 @@ void* consumer::consume(void *args){
         
         
     }
+    if(thread_data->id==COST_SAVING_ALGO)
+        sem_post(thread_data->cost_algo);
+    else
+        sem_post(thread_data->fast_algo);
     return NULL;
 }

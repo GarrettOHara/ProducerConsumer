@@ -9,7 +9,7 @@
 #define PRODUCER_H_
 
 namespace producer{
-    void *produce(void* args);
+    void *produce(void* args);  // producer function
 }
 
 #endif

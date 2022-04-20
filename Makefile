@@ -13,7 +13,7 @@ THREADING = -pthread
 paging : consumer.o producer.o rideshare.o broker.o arguments.o thread_data.h
 	$(CXX) $(CXXFLAGS) $(THREADING) -o rideshare  $^
 
-# only with linux -o rideshare
+# only rename executable with a linux compiler ( -o rideshare )
 
 arguments.o : arguments.h arguments.cpp
 

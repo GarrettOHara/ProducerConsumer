@@ -10,16 +10,17 @@
 
 #include "broker.h"
 
-/* CONSTUCTOR */
+#define INSERT_SUCCESS_INDX 0
+#define HUMAN_REQUEST_INDX  1
+
+/**
+ * @brief Construct a new broker::broker object
+ * 
+ */
 broker::broker(){
     this->total_requests = 0;
     this->current_requests = 0;
     this->current_human_reqs = 0;
-    
-    // int a[] = {0,0};
-    // int b[] = {0,0};
-    // this->consumed[0] = a;
-    // this->consumed[1] = b;
 
     std::vector<int> a = {0,0}; 
     std::vector<int> b = {0,0};
@@ -28,18 +29,21 @@ broker::broker(){
     this->consumed.push_back(b);
 }
 
-/* DECONSTUCTOR */
+/**
+ * @brief Destroy the broker::broker object
+ * 
+ */
 broker::~broker(){
     while(this->buffer.size()>0)
         this->buffer.pop();
 }
 
 /**
- * @brief offer
- *  - insert request into the bounded buffer
+ * @brief insert request into the bounded buffer
  * 
- * @param val 
- *  - request value
+ * @param val request type
+ *  - true:  human
+ *  - false: robot
  */
 bool broker::offer(bool human){
     /* OFFER HUMAN REQUEST */
@@ -51,7 +55,7 @@ bool broker::offer(bool human){
             this->current_requests++;
             this->current_human_reqs++;
             this->total_human_reqs++;
-            this->buffer.push(human);            
+            this->buffer.push(human);
         } else 
             return false;
     
@@ -70,35 +74,47 @@ bool broker::offer(bool human){
 }
 
 /**
- * @brief poll
- *  - remove first request from queue
+ * @brief retrive request at the 
+ * head of the queue
  * 
- * @param index 
- *  - index of request
- * @param val 
- *  - value of request
+ * @return arr
+ *  - arr[0]: retrived value
+ *  - arr[1]: request type
+ *      - true:  human
+ *      - false: robot
  */
 bool* broker::poll(){
+    /* INITALIZE POINTER ARRAY
+        TO STORE RETURN VALUES */
     bool *arr = new bool[2];
+
+    /* CHECK IF THE QUEUE IS EMPTY */
     if(this->current_requests>0){
+
+        /* STORE REQUEST VALUE */
         bool tmp = this->buffer.front();
+
+        /* IF REQUEST IS TRUE: HUMAN */
         if(tmp){
             this->current_human_reqs--;
             this->consumed_human_reqs++;
         }
+        /* UPDATE BUFFER DATA */
         this->current_requests--;
         this->consumed_requests++;
         this->buffer.pop();
-        arr[0]=true;
-        arr[1]=tmp;
+
+        /* RETRIVAL SUCCESS, RETURN REQUEST TYPE*/
+        arr[INSERT_SUCCESS_INDX]=true;
+        arr[HUMAN_REQUEST_INDX]=tmp;
         return arr;
-    } else 
+    } else
+        /* DID NOT RETRIEVE VALUE */
         return arr;
 }
 
 /**
- * @brief to_string
- *  - print data of buffer to std out
+ * @brief print contents of buffer
  * 
  */
 void broker::to_string(){
@@ -116,17 +132,15 @@ void broker::to_string(){
 }
 
 /**
- * @brief get_max_size
- *  - return max size of bounded buffer
+ * @brief return max size of bounded buffer
  * 
- * @return int 
+ * @return int
  */
 int broker::get_max_size(){ return this->max_size; }
 
 /**
- * @brief get_max_humans
- *  - return max size of humans requests
+ * @brief return max size of humans requests
  * 
- * @return int 
+ * @return int
  */
 int broker::get_max_humans(){ return this->max_humans; }
