@@ -19,7 +19,7 @@
 
 /**
  * @brief produce requests and insert into
- * request buffer
+ * bounded buffer
  * 
  * @param args pointer to thread argument
  *  - pass pointer to threading_data struct
@@ -52,10 +52,12 @@ void* producer::produce(void* args){
         if(buffer->offer(human)){
             
             /* {HUMAN REQUESTS IN BUFFER, ROBOT REQUESTS IN BUFFER} */
-            int request_queue[] = {buffer->current_human_reqs,buffer->current_requests-buffer->current_human_reqs};
+            int request_queue[] = {buffer->current_human_reqs,
+                buffer->current_requests-buffer->current_human_reqs};
 
             /* {TOTAL HUMAN REQUESTS, TOTAL ROBOT REQUETS } */
-            int produced[] = {buffer->total_human_reqs,buffer->total_requests-buffer->total_human_reqs};
+            int produced[] = {buffer->total_human_reqs,
+                buffer->total_requests-buffer->total_human_reqs};
 
             /* OUTPUT */
             io_add_type(RequestType (thread_data->id), request_queue, produced);
@@ -64,6 +66,8 @@ void* producer::produce(void* args){
         /* UNLOCK CRITICAL SECTION */
         sem_post(thread_data->mutex);
     }
+
+    /* SIGNAL MAIN THREAD */
     if(thread_data->id==HUMAN_ID)
         sem_post(thread_data->human_req);
     else

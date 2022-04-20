@@ -19,7 +19,15 @@
 #define COST_SAVING_ALGO 0
 #define FAST_MATHCHING_ALO 1
 
+/**
+ * @brief consume requests from bounded buffer
+ * 
+ * @param args pointer to thread argument
+ *  - pass pointer to threading_data struct
+ * @return void* 
+ */
 void* consumer::consume(void *args){
+    /* CAST PARAMETER */
     threading_data *thread_data = (threading_data*)args;
     broker *buffer = thread_data->buffer;
     while(true){
@@ -44,25 +52,27 @@ void* consumer::consume(void *args){
             /* BUFFER->CONSUMED: vector[ALGORITHM][REQUEST TYPE] */
             buffer->consumed[thread_data->id][arr[REQUEST_INDEX]]++;
             
-            /* request[BUFFER TOTAL REQUESTS, BUFFER TOTAL HUMAN REQUESTS]*/
+            /* request{BUFFER TOTAL REQUESTS, BUFFER TOTAL HUMAN REQUESTS}*/
             int request[] = {buffer->current_requests-buffer->current_human_reqs,
-                        buffer->current_human_reqs};
+                buffer->current_human_reqs};
             
-            /* consumed[COST SAVING ALGORITHM FOR REQUEST X, 
-                FAST MATCHING ALGORITHM FOR REQUEST X*/
+            /* consumed{COST SAVING ALGORITHM FOR REQUEST X, 
+                FAST MATCHING ALGORITHM FOR REQUEST X} */
             int consumed[] = {buffer->consumed[arr[REQUEST_INDEX]][COST_SAVING_ALGO],
-                        buffer->consumed[arr[REQUEST_INDEX]][FAST_MATHCHING_ALO]};
+                buffer->consumed[arr[REQUEST_INDEX]][FAST_MATHCHING_ALO]};
             
-            /* imported from io.h, FORMAT TO STD OUT */
+            /* WRITE TO STD OUT */
             io_remove_type(Consumers (thread_data->id),
                 RequestType (arr[REQUEST_INDEX]),
                 request,
                 consumed);
         }
+
+        /* UNLOCK CRITICAL SECTION */
         sem_post(thread_data->mutex);
-        
-        
     }
+
+    /* SIGNAL MAIN THREAD */
     if(thread_data->id==COST_SAVING_ALGO)
         sem_post(thread_data->cost_algo);
     else
