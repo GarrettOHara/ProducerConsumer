@@ -50,6 +50,8 @@ void* consumer::consume(void *args){
         if(arr[INSERT_COMPLETE]){
             
             /* BUFFER->CONSUMED: vector[ALGORITHM][REQUEST TYPE] 0:HDR 1:RDR */
+            /* SINCE TRUE MEANS HUMAN REQUEST BUT CASTED TO INT IS 1 WE NEED TO */
+            /* SWAP THE VALUES SO THAT 0->HDR AND 1->RDR */
             int request_indx = 0;
             if(!arr[REQUEST_INDEX])
                 request_indx = 1;
