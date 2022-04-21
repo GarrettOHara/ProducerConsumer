@@ -12,6 +12,7 @@
 
 #define INSERT_SUCCESS_INDX 0
 #define HUMAN_REQUEST_INDX  1
+#define POLL_RETURN_TUPLE 2
 
 /**
  * @brief Construct a new broker::broker object
@@ -86,7 +87,7 @@ bool broker::offer(bool human){
 bool* broker::poll(){
     /* INITALIZE POINTER ARRAY
         TO STORE RETURN VALUES */
-    bool *arr = new bool[2];
+    bool *arr = new bool[POLL_RETURN_TUPLE];
 
     /* CHECK IF THE QUEUE IS EMPTY */
     if(this->current_requests>0){

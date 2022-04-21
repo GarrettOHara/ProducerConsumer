@@ -11,6 +11,8 @@
 
 #include "arguments.h"
 
+#define NEXT_VALUE 1
+
 using namespace std;
 
 /**
@@ -25,34 +27,34 @@ void args::proccess_args(int argc, char **argv, struct arguments *DATA){
     for(int i = 1; i < argc; i++){
 
         /* CAST ARGUMENT VALUE TO INTEGER */
-        int val = atoi(argv[i+1]);
+        int val = atoi(argv[i+NEXT_VALUE]);
 
         /* CHECK INVALID BOUNDS */
         if(val < 0)
             throw std::invalid_argument("Argument must be greater than 0");
         
         /* PROCESS REQUEST COUNT ARGUMENT */
-        if(strcmp(argv[i],"-n")==0 && i+1 < argc){
+        if(strcmp(argv[i],"-n")==0 && i+NEXT_VALUE < argc){
             DATA->request_limit = val;
             i++;
             
         /* PROCESS COST SAVING ALGORITHM LATENCY */
-        } else if(strcmp(argv[i],"-c")==0 && i+1 < argc){
+        } else if(strcmp(argv[i],"-c")==0 && i+NEXT_VALUE < argc){
             DATA->cost_saving_consumer = val;
             i++;
             
         /* PROCESS FAST MATCHING ALGORITHM LATENCY */
-        } else if(strcmp(argv[i],"-f")==0 && i+1 < argc){
+        } else if(strcmp(argv[i],"-f")==0 && i+NEXT_VALUE < argc){
             DATA->fast_match_consumer = val;
             i++;
             
         /* PROCESS HUMAN DRIVER REQUEST LATENCY */
-        }else if(strcmp(argv[i], "-h")==0 && i+1 < argc){
+        }else if(strcmp(argv[i], "-h")==0 && i+NEXT_VALUE < argc){
             DATA->human_driver_req = val;
             i++;
             
         /* PROCESS AUTONOMOUS DRIVER REQUEST LATENCY */
-        }else if(strcmp(argv[i], "-a")==0 && i+1 < argc){
+        }else if(strcmp(argv[i], "-a")==0 && i+NEXT_VALUE < argc){
             DATA->auton_driver_req = val;
             i++;
         }

@@ -8,11 +8,13 @@
 #ifndef ARGUMENTS_H_
 #define ARGUMENTS_H_
 
+#define DEFAULT_REQ_LIMIT 120
+
 #include <semaphore.h>
 
 struct arguments{
    
-    int   request_limit = 120;                  // program request limit
+    int   request_limit = DEFAULT_REQ_LIMIT;    // program request limit
 
     int   human_driver_req = 0;                 // human driver request latency
     int   auton_driver_req = 0;                 // autonomous driver request latency
