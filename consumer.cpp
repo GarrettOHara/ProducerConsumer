@@ -49,8 +49,11 @@ void* consumer::consume(void *args){
         /* IF REQUEST WAS SUCCESSFUL, UPDATE COUNTS, WRITE TO STD OUT */
         if(arr[INSERT_COMPLETE]){
             
-            /* BUFFER->CONSUMED: vector[ALGORITHM][REQUEST TYPE] */
-            buffer->consumed[thread_data->id][arr[REQUEST_INDEX]]++;
+            /* BUFFER->CONSUMED: vector[ALGORITHM][REQUEST TYPE] 0:HDR 1:RDR */
+            int request_indx = 0;
+            if(!arr[REQUEST_INDEX])
+                request_indx = 1;
+            buffer->consumed[thread_data->id][request_indx]++;
             
             /* request{BUFFER TOTAL REQUESTS, BUFFER TOTAL HUMAN REQUESTS}*/
             int request[] = {buffer->current_requests-buffer->current_human_reqs,
